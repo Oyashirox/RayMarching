@@ -8,6 +8,7 @@ import fr.oyashirox.raymarching.math.Vec
  */
 
 class Sphere(val center: Vec, val radius: Double, val color: Int): Scene {
+    override fun normal(position: Vec): Vec = (position - center).normalize()
     override fun color(position: Vec): Int = color
     override fun distance(position: Vec) = (position - center).norm() - radius
 }

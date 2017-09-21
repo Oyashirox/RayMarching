@@ -8,4 +8,5 @@ import fr.oyashirox.raymarching.math.Vec
 interface Scene {
     fun distance(position: Vec): Double
     fun color(position: Vec): Int
+    fun normal(position: Vec): Vec
 }

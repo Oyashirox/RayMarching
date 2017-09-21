@@ -1,5 +1,6 @@
 package fr.oyashirox.raymarching
 
+import android.graphics.Color
 import android.os.SystemClock
 import android.util.Log
 import fr.oyashirox.raymarching.math.Vec
@@ -7,7 +8,7 @@ import fr.oyashirox.raymarching.math.Vec
 /**
  * Created by Oyashirox on 20/09/2017.
  */
-class Renderer(val scene: Scene, val camera: Camera, val viewportSize: Int) {
+class Renderer(val scene: Scene, val camera: Camera, val light: DirectionalLight, val viewportSize: Int) {
     private val defaultColor = 0xFFFFFFAA.toInt()
     private val bitmap = IntArray(viewportSize * viewportSize, { defaultColor })
 
@@ -35,7 +36,7 @@ class Renderer(val scene: Scene, val camera: Camera, val viewportSize: Int) {
         return bitmap
     }
 
-    private val EPSILON = 0.01
+    private val EPSILON = 0.0000000001
     private val MAX_DIST = 500
     private val MAX_STEP = 500
 
@@ -56,9 +57,22 @@ class Renderer(val scene: Scene, val camera: Camera, val viewportSize: Int) {
         }
 
         if (distance < EPSILON) {
-            return scene.color(position)
+            return computeLight(position, scene.color(position))
         }
 
         return defaultColor
+    }
+
+    private fun computeLight(position: Vec, color: Int): Int {
+        val normal = scene.normal(position).normalize()
+        val factor = Math.max(0.0, light.normalizedLight.dot(normal))
+        val r = Color.red(color) / 255.0 * Color.red(light.color) / 255.0 * factor
+        val g = Color.green(color) / 255.0 * Color.green(light.color) / 255.0 * factor
+        val b = Color.blue(color) / 255.0 * Color.blue(light.color) / 255.0 * factor
+        val red = (r * 255).toInt()
+        val green = (g * 255).toInt()
+        val blue = (b * 255).toInt()
+
+        return Color.argb(255, red, green, blue)
     }
 }

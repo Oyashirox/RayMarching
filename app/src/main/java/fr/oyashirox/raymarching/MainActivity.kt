@@ -23,9 +23,10 @@ class MainActivity : AppCompatActivity() {
         image = findViewById(R.id.imageview)
         loading = findViewById(R.id.loading)
 
-        val sphere = Sphere(Vec(0.0, 0.0, 0.0), 6.0, 0xFFFF0000.toInt())
-        val camera = Camera(Vec(0.0, 0.0, -10.0), Vec(0.0, 0.0, 1.0))
-        val renderer = Renderer(sphere, camera, viewportSize)
+        val sphere = Sphere(Vec(00.0, 0.0, 0.0), 12.0, 0xFFFF0000.toInt())
+        val camera = Camera(Vec(0.0, 0.0, -20.0), Vec(0.0, 0.0, 1.0))
+        val light = DirectionalLight(Vec(5.0, -10.0, 20.0), 0xFFFFFFFF.toInt())
+        val renderer = Renderer(sphere, camera, light, viewportSize)
 
         //val bitmapArray = renderer.render()
         //val bitmap = Bitmap.createBitmap(bitmapArray, viewportSize, viewportSize, Bitmap.Config.ARGB_8888)

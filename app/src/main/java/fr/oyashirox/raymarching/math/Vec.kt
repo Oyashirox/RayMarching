@@ -12,4 +12,7 @@ data class Vec(val x: Double, val y: Double, val z: Double) {
     operator fun div(scalar: Double) = Vec(x / scalar, y / scalar, z / scalar)
     operator fun plus(other: Vec) = Vec(x + other.x, y + other.y, z + other.z)
     operator fun minus(other: Vec) = Vec(x - other.x, y - other.y, z - other.z)
+    operator fun unaryMinus() = Vec(-x, -y, -z)
+
+    fun dot(other: Vec): Double = x * other.x + y * other.y + z * other.z
 }
