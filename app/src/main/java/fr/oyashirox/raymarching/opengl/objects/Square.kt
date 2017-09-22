@@ -30,7 +30,10 @@ class Square(val context: Context) {
 
     private val program: Int // Shader (vertexShader, fragmentShader)
     private var positionHandle: Int = 0 // Access to vertex shader variable
-    private var colorHandle: Int = 0 // Access to fragment shadder variable
+    private var colorHandle: Int = 0 // Access to fragment shader variable
+    private var sizeHandle: Int = 0 // Access to fragment shader variable
+
+    var viewport: Pair<Float, Float>? = Pair(256.0f, 256.0f)
 
     init {
         // initialize vertex byte buffer for shape coordinates
@@ -73,6 +76,9 @@ class Square(val context: Context) {
         //Send color to fragment shader
         colorHandle = GLES20.glGetUniformLocation(program, "vColor")
         GLES20.glUniform4fv(colorHandle, 1, color, 0)
+
+        sizeHandle = GLES20.glGetUniformLocation(program, "vSize")
+        GLES20.glUniform2f(sizeHandle, viewport!!.first, viewport!!.second)
 
         // Draw !
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrder.size, GLES20.GL_UNSIGNED_SHORT, drawListBuffer)

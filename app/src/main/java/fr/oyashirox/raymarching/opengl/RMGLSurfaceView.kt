@@ -12,7 +12,7 @@ class RMGLSurfaceView(context: Context): GLSurfaceView(context) {
     init {
         setEGLContextClientVersion(2) // OpenGL ES 2
         setRenderer(renderer)
-        renderMode = RENDERMODE_WHEN_DIRTY  // Render only when data changes
+        //renderMode = RENDERMODE_WHEN_DIRTY  // Render only when data changes
     }
 
 }

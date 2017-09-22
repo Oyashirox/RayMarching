@@ -7,6 +7,7 @@ import fr.oyashirox.raymarching.opengl.objects.Square
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
+
 class RMGLRenderer(val context: Context) : GLSurfaceView.Renderer {
     private lateinit var square: Square
 
@@ -15,8 +16,10 @@ class RMGLRenderer(val context: Context) : GLSurfaceView.Renderer {
         square = Square(context)
     }
 
+
     override fun onSurfaceChanged(unused: GL10?, width: Int, height: Int) {
         GLES20.glViewport(0, 0, width, height)
+        square.viewport = Pair(width.toFloat(), height.toFloat())
     }
 
     override fun onDrawFrame(unused: GL10?) {

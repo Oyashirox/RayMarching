@@ -1,6 +1,7 @@
 package fr.oyashirox.raymarching.opengl
 
 import android.opengl.GLES20
+import android.util.Log
 import org.apache.commons.io.IOUtils
 import java.io.InputStream
 
@@ -13,6 +14,7 @@ fun loadShader(type: Int, code: String): Int {
 
     GLES20.glShaderSource(shader, code)
     GLES20.glCompileShader(shader)
+    Log.w("GLUtils", GLES20.glGetShaderInfoLog(shader))
 
     return shader
 }
