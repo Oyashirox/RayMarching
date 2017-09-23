@@ -2,7 +2,10 @@ package fr.oyashirox.raymarching.opengl.objects
 
 import android.content.Context
 import android.opengl.GLES20
+import android.opengl.Matrix
+import android.os.SystemClock
 import fr.oyashirox.raymarching.R
+import fr.oyashirox.raymarching.math.Vec
 import fr.oyashirox.raymarching.opengl.inputStreamToShader
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -23,7 +26,6 @@ class Square(val context: Context) {
     }
 
     private val vertexBuffer: FloatBuffer // Vertex (squareCoords)
-    private val vertexCount = squareCoords.size / COORDS_PER_VERTEX
     private val vertexStride = COORDS_PER_VERTEX * 4 // 4 bytes per coord
 
     private val drawListBuffer: ShortBuffer // Order (drawOrder)
@@ -32,8 +34,10 @@ class Square(val context: Context) {
     private var positionHandle: Int = 0 // Access to vertex shader variable
     private var colorHandle: Int = 0 // Access to fragment shader variable
     private var sizeHandle: Int = 0 // Access to fragment shader variable
+    private var lightHandle: Int = 0 // Access to fragment shader variable
 
     var viewport: Pair<Float, Float>? = Pair(256.0f, 256.0f)
+    var lightDirection: Vec = Vec(1.0, 00.0, 00.0)
 
     init {
         // initialize vertex byte buffer for shape coordinates
@@ -79,6 +83,15 @@ class Square(val context: Context) {
 
         sizeHandle = GLES20.glGetUniformLocation(program, "vSize")
         GLES20.glUniform2f(sizeHandle, viewport!!.first, viewport!!.second)
+
+        val angle = Math.PI/100
+        lightDirection = Vec(
+                Math.cos(angle) * lightDirection.x - Math.sin(angle)*lightDirection.z ,
+                0.0,
+                Math.sin(angle) * lightDirection.x + Math.cos(angle)*lightDirection.z)
+
+        lightHandle = GLES20.glGetUniformLocation(program, "vLight")
+        GLES20.glUniform3f(lightHandle, lightDirection.x.toFloat(), lightDirection.y.toFloat(), lightDirection.z.toFloat())
 
         // Draw !
         GLES20.glDrawElements(GLES20.GL_TRIANGLES, drawOrder.size, GLES20.GL_UNSIGNED_SHORT, drawListBuffer)
